@@ -3,6 +3,7 @@
 #include <iostream>
 #include <random>
 #include "UniqueGenerator.h"
+#include <iomanip>
 
 #define A 7
 #define B 10
@@ -13,6 +14,15 @@ enum mode {
 	unimodal,
 	multimodal
 };
+
+vector<double> getForTable() {
+	vector<double> r;
+	r.resize(10);
+	for (int x = 0; x < 10; x++) 
+		r[x] = 0.9 + 0.01 * x;
+	return r;
+}
+
 
 double getValueFor(double x, mode m) {
 	if(m==unimodal) return cos(x) + log10(x);
@@ -28,13 +38,20 @@ int n_counter(double p, double q) {
 vector<vector<int>> tableGetter() {
 	vector<vector<int>> res;
 	res.resize(20);
+	vector<double> positions = getForTable();
+	std::cout << "q\\P \t";
+	for (int k = 0; k < 10; k++) {
+		std::cout << positions[k] << '\t';
+	}
+	std::cout << std::endl;
 	for (int i = 0; i < 20; i++) {
 		res[i].resize(10);
 		double q = 0.005 * (i+1);
+		std::cout << q << '\t';
 		for (int j = 0; j < 10; j++) {
-			double p = 0.9 + 0.01*j;
-			res[i][j] = n_counter(p, q);
-			std::cout << res[i][j]<<'\t';
+			//double p = 0.9 + 0.01*j;
+			res[i][j] = n_counter(positions[j], q);
+			std::cout << "|"<<res[i][j]<<'\t';
 		}
 		std::cout << std::endl;
 	}
@@ -57,17 +74,22 @@ double count(int amount, mode m){
 	return f_min;
 }
 
-
-
-
+	
 
 int main(){
 	vector<vector<int>> amountTable = tableGetter();
+	vector<double> q_s = getForTable();
 	std::cout << std::endl << std::endl;
 	for (mode a : {unimodal, multimodal}) {
+		std::cout << " q\\P \t";
+		for (int k = 0; k < 10; k++) { 
+			std::cout << std::fixed << std::setprecision(4) << q_s[k] << "\t"; 
+		}
+		std::cout << '\n';
 		for (int i = 0; i < 20; i++) {
+			std::cout << 0.005 * (i + 1) << '\t';
 			for (int j = 0; j < 10; j++) {
-				std::cout << count(amountTable[i][j], a)<<'\t';
+				std::cout << count(amountTable[i][j], a) << "\t";
 			}
 			std::cout << std::endl;
 		}
