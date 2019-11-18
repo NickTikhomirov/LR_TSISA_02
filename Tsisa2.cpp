@@ -77,10 +77,16 @@ double count(int amount, mode m){
 	
 
 int main(){
+	std::cout << "P - probability of optimum point is situated in the interval of undefinity \n";
+	std::cout << "q - probability of any point is situated in the interval of undefinity \n";
+	std::cout<<"Amount of attempts:\n";
 	vector<vector<int>> amountTable = tableGetter();
 	vector<double> q_s = getForTable();
 	std::cout << std::endl << std::endl;
 	for (mode a : {unimodal, multimodal}) {
+		std::cout << "Result for ";
+		std::cout << ((a == unimodal)?"unimodal":"multimodal");
+		std::cout << ":\n";
 		std::cout << " q\\P \t";
 		for (int k = 0; k < 10; k++) { 
 			std::cout << std::fixed << std::setprecision(4) << q_s[k] << "\t"; 
